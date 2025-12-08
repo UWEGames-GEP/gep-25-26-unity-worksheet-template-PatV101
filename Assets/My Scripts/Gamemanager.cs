@@ -6,6 +6,8 @@ public class Gamemanager : MonoBehaviour
     public enum GameState {PLAY, PAUSE, GAMEOVER }
     public GameState state;
     public bool hasChangedState = false;
+    public GameObject InventoryPanel;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -13,6 +15,7 @@ public class Gamemanager : MonoBehaviour
     }
 
     // Update is called once per frame
+    /*
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -30,6 +33,7 @@ public class Gamemanager : MonoBehaviour
             hasChangedState = true;
         }
     }
+    */
 
     private void LateUpdate()
     {
@@ -41,11 +45,30 @@ public class Gamemanager : MonoBehaviour
         {
             case GameState.PLAY:
                 Time.timeScale = 1.0f;
+                InventoryPanel.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
                 break;
 
             case GameState.PAUSE:
                 Time.timeScale = 0.0f;
+                InventoryPanel.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
                 break;
         }
+    }
+
+    public void PauseGame()
+    {
+        switch (state)
+        {
+            case GameState.PLAY:
+                state = GameState.PAUSE;
+                break;
+
+            case GameState.PAUSE:
+                state = GameState.PLAY;
+                break;
+        }
+        hasChangedState = true;
     }
 }
